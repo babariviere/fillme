@@ -60,6 +60,10 @@ impl Player {
         }.to_owned();
         Player { name: name, sym: c }
     }
+
+    pub fn name(&self) -> &str {
+        &self.name
+    }
 }
 
 #[derive(Debug)]
@@ -70,15 +74,7 @@ pub struct Board {
 }
 
 impl Board {
-    pub fn empty() -> Board {
-        Board {
-            width: 0,
-            height: 0,
-            maps: Vec::new(),
-        }
-    }
-
-    pub fn read(line: String) -> Result<Board, Error> {
+    pub fn read(line: &str) -> Result<Board, Error> {
         let splitted = line.split_whitespace()
             .map(|s| s.chars().filter(|c| c.is_numeric()).collect::<String>())
             .collect::<Vec<String>>();
@@ -126,7 +122,7 @@ pub struct Piece {
 }
 
 impl Piece {
-    pub fn read(line: String) -> Result<Piece, Error> {
+    pub fn read(line: &str) -> Result<Piece, Error> {
         let splitted = line.split_whitespace()
             .map(|s| s.chars().filter(|c| c.is_numeric()).collect::<String>())
             .collect::<Vec<String>>();

@@ -5,4 +5,4 @@ authors = ["briviere <briviere@student.42.fr>"]
 
 [dependencies]
 failure = "0.1.1"
-piston_window = "0.74.0"
+piston_window = "0.75.0"
