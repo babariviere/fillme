@@ -3,7 +3,7 @@
 set -ex
 
 main() {
-    cross build --target $TARGET --release
+    cargo build --target $TARGET --release
 
 	mkdir -p bin/
     cp -f target/$TARGET/release/fillme bin/$CRATE_NAME-$TARGET
