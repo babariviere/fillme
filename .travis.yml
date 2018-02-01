@@ -8,11 +8,15 @@ rust:
 cache: cargo
 
 script:
-    - cargo build --release
+    - cargo build --release --verbose
 
 os:
     - osx
     - linux
+
+before_deploy:
+    - env
+    - find . -name "fillme"
 
 deploy:
   provider: releases
