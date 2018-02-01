@@ -27,14 +27,6 @@ enum DataKind {
     End,
 }
 
-//const COLOR_X: [f32; 4] = [0.227, 0.286, 0.643, 1.0];
-//const COLOR_X: [f32; 4] = [0.6, 0., 0., 1.0];
-const COLOR_X: [f32; 4] = [0.082, 0.506, 0.039, 1.0];
-const COLOR_SX: [f32; 4] = [COLOR_X[0] * 1.5, COLOR_X[1] * 1.5, COLOR_X[2] * 1.5, 1.0];
-//const COLOR_O: [f32; 4] = [0.937, 0.741, 0.239, 1.0];
-//const COLOR_O: [f32; 4] = [0., 0., 0.6, 1.0];
-const COLOR_O: [f32; 4] = [0.608, 0.047, 0.075, 1.0];
-const COLOR_SO: [f32; 4] = [COLOR_O[0] * 1.5, COLOR_O[1] * 1.5, COLOR_O[2] * 1.5, 1.0];
 const COLOR_NONE: [f32; 4] = [0.1, 0.1, 0.1, 1.0];
 
 const FONT: &'static [u8] = include_bytes!("../assets/font/Roboto-Regular.ttf");
@@ -282,7 +274,7 @@ fn main_loop() -> Result<(), Error> {
             println!("O={}, X={}", score_o, score_x);
             tx.send(DataKind::End).unwrap();
         } else {
-            read_line_stdin().unwrap();
+            tx.send(DataKind::End).unwrap();
             break;
         }
         //thread::sleep(Duration::from_millis(5));

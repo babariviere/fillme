@@ -21,7 +21,7 @@ main() {
     cross build --target $TARGET --release
 
     # TODO Update this to package the right artifacts
-    cp target/$TARGET/release/fillme $CRATE_NAME-$TRAVIS_TAG-$TARGET
+    cp target/$TARGET/release/fillme $CRATE_NAME-$TARGET
 }
 
 main

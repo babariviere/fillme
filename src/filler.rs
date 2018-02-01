@@ -51,7 +51,7 @@ impl Player {
         } else {
             PlayerSymbol::X
         };
-        let end_idx = line.find(".filler").unwrap();
+        let end_idx = line.rfind(".filler").unwrap_or(line.rfind("]").unwrap());
         let beg_idx = line.find('[').unwrap();
         let name = match line.rfind('/') {
             Some(idx) => &line[idx + 1..end_idx],
