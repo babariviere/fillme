@@ -34,6 +34,7 @@ matrix:
 before_install:
   - set -e
   - rustup self update
+  - rustup target install $TARGET
 
 install:
   - sh ci/install.sh
