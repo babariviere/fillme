@@ -10,6 +10,10 @@ cache: cargo
 script:
     - cargo build --release
 
+os:
+    - osx
+    - linux
+
 deploy:
   provider: releases
   api_key:
