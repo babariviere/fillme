@@ -6,7 +6,7 @@ main() {
     cross build --target $TARGET --release
 
 	mkdir -p bin/
-    cp target/$TARGET/release/fillme bin/$CRATE_NAME-$TARGET
+    cp -f target/$TARGET/release/fillme bin/$CRATE_NAME-$TARGET
 }
 
 main
