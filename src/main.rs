@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate failure;
+extern crate palette;
 extern crate piston_window;
 
 mod filler;
@@ -7,6 +8,7 @@ mod filler;
 use filler::*;
 
 use failure::Error;
+use palette::*;
 use piston_window::*;
 use std::sync::mpsc;
 use std::thread;
@@ -25,15 +27,19 @@ enum DataKind {
     End,
 }
 
-const COLOR_X: [f32; 4] = [0.227, 0.286, 0.643, 1.0];
+//const COLOR_X: [f32; 4] = [0.227, 0.286, 0.643, 1.0];
+//const COLOR_X: [f32; 4] = [0.6, 0., 0., 1.0];
+const COLOR_X: [f32; 4] = [0.082, 0.506, 0.039, 1.0];
 const COLOR_SX: [f32; 4] = [COLOR_X[0] * 1.5, COLOR_X[1] * 1.5, COLOR_X[2] * 1.5, 1.0];
-const COLOR_O: [f32; 4] = [0.937, 0.741, 0.239, 1.0];
+//const COLOR_O: [f32; 4] = [0.937, 0.741, 0.239, 1.0];
+//const COLOR_O: [f32; 4] = [0., 0., 0.6, 1.0];
+const COLOR_O: [f32; 4] = [0.608, 0.047, 0.075, 1.0];
 const COLOR_SO: [f32; 4] = [COLOR_O[0] * 1.5, COLOR_O[1] * 1.5, COLOR_O[2] * 1.5, 1.0];
 const COLOR_NONE: [f32; 4] = [0.1, 0.1, 0.1, 1.0];
 
 const FONT: &'static [u8] = include_bytes!("../assets/font/Roboto-Regular.ttf");
 
-const FONT_SPACE: f64 = 25.0;
+const FONT_SPACE: f64 = 40.0;
 
 struct DisplaySettings {
     stop: bool,
@@ -62,9 +68,32 @@ fn ui_thread(mut data: Data, rx: mpsc::Receiver<DataKind>) {
         .build()
         .unwrap();
     let factory = window.factory.clone();
+
+    let color_o = Rgb::new_u8(35, 106, 101);
+    let color_x = color_o
+        .clone()
+        .into_hsv()
+        .shift_hue(RgbHue::from(180.))
+        .into_rgb();
+    println!("{:?}", color_x);
+    let color_o_array: [f32; 4] = color_o.to_pixel();
+    let color_so_array = [
+        color_o_array[0] * 1.5,
+        color_o_array[1] * 1.5,
+        color_o_array[2] * 1.5,
+        1.,
+    ];
+    let color_x_array: [f32; 4] = color_x.to_pixel();
+    let color_sx_array = [
+        color_x_array[0] * 1.5,
+        color_x_array[1] * 1.5,
+        color_x_array[2] * 1.5,
+        1.,
+    ];
+
     let mut glyphs = Glyphs::from_bytes(FONT, factory, TextureSettings::new()).unwrap();
-    let text_o = text::Text::new_color(COLOR_O, 20);
-    let text_x = text::Text::new_color(COLOR_X, 20);
+    let text_o = text::Text::new_color(color_o_array, 20);
+    let text_x = text::Text::new_color(color_x_array, 20);
     let mut ds = DisplaySettings {
         stop: false,
         instant: Instant::now(),
@@ -98,10 +127,10 @@ fn ui_thread(mut data: Data, rx: mpsc::Receiver<DataKind>) {
                             _ => {}
                         }
                         let color = match *col {
-                            'X' => COLOR_X,
-                            'x' => COLOR_SX,
-                            'O' => COLOR_O,
-                            'o' => COLOR_SO,
+                            'X' => color_x_array,
+                            'x' => color_sx_array,
+                            'O' => color_o_array,
+                            'o' => color_so_array,
                             _ => COLOR_NONE,
                         };
                         let rect = [(x * 10) as f64 + 1.0, (y * 10) as f64 + 1.0, 8., 8.];

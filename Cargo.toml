@@ -6,3 +6,4 @@ authors = ["briviere <briviere@student.42.fr>"]
 [dependencies]
 failure = "0.1.1"
 piston_window = "0.75.0"
+palette = "0.2.1"

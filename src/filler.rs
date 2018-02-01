@@ -6,7 +6,6 @@ pub fn read_line_stdin() -> Result<String, Error> {
     let stdin = stdin();
     let mut lock = stdin.lock();
     lock.read_line(&mut buf)?;
-    //print!("{}", buf);
     Ok(buf)
 }
 
