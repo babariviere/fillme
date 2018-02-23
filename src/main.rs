@@ -49,10 +49,16 @@ fn ui_thread(mut data: Data, rx: mpsc::Receiver<DataKind>) {
             panic!("unexpected haha");
         }
     }
-    let size = (
+    let mut size = (
         data.board[0].width() * 10,
         data.board[0].height() * 10 + 100,
     );
+    if size.0 < 700 {
+        size.0 = 700;
+    }
+    if size.1 < 500 {
+        size.1 = 500;
+    }
     let opengl = OpenGL::V3_2;
     let mut window: PistonWindow = WindowSettings::new("FillMe", size)
         .opengl(opengl)
@@ -91,12 +97,22 @@ fn ui_thread(mut data: Data, rx: mpsc::Receiver<DataKind>) {
         instant: Instant::now(),
         board_idx: 0,
         scale: 1.,
-        speed: 25,
+        speed: 5,
         step: 1,
     };
+    {
+        let b = &data.board[ds.board_idx];
+        let width = (size.0 as f64) / (b.width() as f64 * 10.);
+        let height = (size.1 as f64) / ((b.height() as f64 * 10.) + FONT_SPACE);
+        if height > width {
+            ds.scale = width as f64;
+        } else {
+            ds.scale = height as f64;
+        }
+    }
     while let Some(e) = window.next() {
         if let Some(_r) = e.render_args() {
-            let loaded = data.board.len() - 1;
+            //let loaded = data.board.len() - 1;
             let b = &data.board[ds.board_idx];
             window.draw_2d(&e, |c, g| {
                 clear(
@@ -163,15 +179,15 @@ fn ui_thread(mut data: Data, rx: mpsc::Receiver<DataKind>) {
                         g,
                     )
                     .unwrap();
-                text_x
-                    .draw(
-                        &format!("curr={}, loaded={}", ds.board_idx, loaded),
-                        &mut glyphs,
-                        &c.draw_state,
-                        c.transform.trans(700., FONT_SPACE),
-                        g,
-                    )
-                    .unwrap();
+                //text_x
+                //    .draw(
+                //        &format!("curr={}, loaded={}", ds.board_idx, loaded),
+                //        &mut glyphs,
+                //        &c.draw_state,
+                //        c.transform.trans(700., FONT_SPACE),
+                //        g,
+                //    )
+                //    .unwrap();
             });
         }
         if let Some(array) = e.resize_args() {
